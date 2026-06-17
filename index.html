@@ -3,26 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculate Date & Time</title>
+    <title>Download Data Calculator - UTC Time</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f6f9;
+            background-color: #05437e;
             color: #333;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .container {
-            background-color: #ffffff;
+            background-color: #f4f7f8;
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 500px;
+            position: relative;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            max-width: 500px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
         }
 
         h2 {
@@ -30,7 +46,7 @@
             color: #1e3a8a;
             margin-top: 0;
             margin-bottom: 25px;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             border-bottom: 2px solid #e2e8f0;
             padding-bottom: 10px;
         }
@@ -97,48 +113,68 @@
             font-weight: bold;
             color: #0f172a;
         }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.85rem;
+            color: #789cce;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 15px;
+        }
+
+        .footer strong {
+            color: #154fa0;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Calculate Date & Time</h2>
+    <div class="logo-container">
+        <img src="logo.png" alt="Logo" onerror="this.style.display='none';">
+    </div>
+
+    <h2>Calculator for Dates & Time</h2>
     
     <div class="input-group">
-        <label for="base-date">Choose Date-Time:</label>
+        <label for="base-date">Select Date & Time:</label>
         <input type="datetime-local" id="base-date">
     </div>
 
     <div class="results">
         <div class="result-item">
-            <div class="label-text">CARD DATA DOWNLOAD +28 DAYS (+28)</div>
+            <div class="label-text">CARD Download Data in 28 Days (+28)</div>
             <div class="value-text" id="card-28">-</div>
         </div>
 
         <div class="result-item">
-            <div class="label-text">VEHICLE DATA DOWNLOAD +90 DAYS (+90)</div>
+            <div class="label-text">VEHICLE Download Data in 90 days (+90)</div>
             <div class="value-text" id="vehicle-90">-</div>
         </div>
 
         <div class="result-item minus">
-            <div class="label-text">CONTROL 56 DAYS (-56)</div>
+            <div class="label-text">Control 56 Days (-56)</div>
             <div class="value-text" id="check-56">-</div>
         </div>
 
         <div class="result-item utc">
-            <div class="label-text">WINTER TIME = UTC +2:00h (-2 ώρες)</div>
+            <div class="label-text">GR Winter Time = UTC +2:00h (-2 hour)</div>
             <div class="value-text" id="utc-2">-</div>
         </div>
 
         <div class="result-item utc">
-            <div class="label-text">SUMMER TIME = UTC +3:00h (-3 ώρες)</div>
+            <div class="label-text">GR Summer Time = UTC +3:00h (-3 hour)</div>
             <div class="value-text" id="utc-3">-</div>
         </div>
+    </div>
+
+    <div class="footer">
+        Created by <strong>Konstantina Soumela</strong>
     </div>
 </div>
 
 <script>
-    // Συναρτήσεις μορφοποίησης
     function formatDateTime(date) {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -154,37 +190,34 @@
 
         const baseDate = new Date(inputVal);
 
-        // 1. Κάρτα σε 28 ημέρες
+        // 1. Card in 28 days
         const card28Date = new Date(baseDate);
         card28Date.setDate(card28Date.getDate() + 28);
         document.getElementById('card-28').innerText = formatDateTime(card28Date);
 
-        // 2. Όχημα σε 90 ημέρες
+        // 2. Vehicle in 90 Days
         const vehicle90Date = new Date(baseDate);
         vehicle90Date.setDate(vehicle90Date.getDate() + 90);
         document.getElementById('vehicle-90').innerText = formatDateTime(vehicle90Date);
 
-        // 3. Έλεγχος 56 ημερών πίσω
+        // 3. Control 56 days before
         const check56Date = new Date(baseDate);
         check56Date.setDate(check56Date.getDate() - 56);
         document.getElementById('check-56').innerText = formatDateTime(check56Date);
 
-        // 4. Χειμερινή ώρα UTC +2 (Αφαίρεση 2 ωρών για να πάμε σε UTC)
+        // 4. Winter Time in Greece = UTC +2
         const utc2Date = new Date(baseDate);
         utc2Date.setHours(utc2Date.getHours() - 2);
         document.getElementById('utc-2').innerText = formatDateTime(utc2Date);
 
-        // 5. Θερινή ώρα UTC +3 (Αφαίρεση 3 ωρών για να πάμε σε UTC)
+        // 5. Summer Timein Greece = UTC +3
         const utc3Date = new Date(baseDate);
         utc3Date.setHours(utc3Date.getHours() - 3);
         document.getElementById('utc-3').innerText = formatDateTime(utc3Date);
     }
 
-    // Αρχικοποίηση με την τρέχουσα ημερομηνία και ώρα τοπικά
     window.addEventListener('DOMContentLoaded', () => {
         const now = new Date();
-        
-        // Μορφοποίηση για το input datetime-local (YYYY-MM-DDTHH:mm)
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
@@ -196,10 +229,7 @@
         const dateInput = document.getElementById('base-date');
         dateInput.value = currentDateTimeString;
         
-        // Εκτέλεση του πρώτου υπολογισμού
         calculateDates();
-        
-        // Σύνδεση του event listener για να ανανεώνεται όταν αλλάζει η τιμή
         dateInput.addEventListener('input', calculateDates);
     });
 </script>
