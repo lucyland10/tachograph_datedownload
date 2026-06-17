@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculate Date & Time</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #1e3a8a;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #4b5563;
+        }
+
+        input[type="datetime-local"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="datetime-local"]:focus {
+            border-color: #3b82f6;
+        }
+
+        .results {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .result-item {
+            background-color: #f8fafc;
+            border-left: 5px solid #3b82f6;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .result-item.minus {
+            border-left-color: #ef4444;
+        }
+
+        .result-item.utc {
+            border-left-color: #10b981;
+        }
+
+        .label-text {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .value-text {
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: #0f172a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Calculate Date & Time</h2>
+    
+    <div class="input-group">
+        <label for="base-date">Choose Date-Time:</label>
+        <input type="datetime-local" id="base-date">
+    </div>
+
+    <div class="results">
+        <div class="result-item">
+            <div class="label-text">CARD DATA DOWNLOAD +28 DAYS (+28)</div>
+            <div class="value-text" id="card-28">-</div>
+        </div>
+
+        <div class="result-item">
+            <div class="label-text">VEHICLE DATA DOWNLOAD +90 DAYS (+90)</div>
+            <div class="value-text" id="vehicle-90">-</div>
+        </div>
+
+        <div class="result-item minus">
+            <div class="label-text">CONTROL 56 DAYS (-56)</div>
+            <div class="value-text" id="check-56">-</div>
+        </div>
+
+        <div class="result-item utc">
+            <div class="label-text">WINTER TIME = UTC +2:00h (-2 ώρες)</div>
+            <div class="value-text" id="utc-2">-</div>
+        </div>
+
+        <div class="result-item utc">
+            <div class="label-text">SUMMER TIME = UTC +3:00h (-3 ώρες)</div>
+            <div class="value-text" id="utc-3">-</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Συναρτήσεις μορφοποίησης
+    function formatDateTime(date) {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${day}/${month}/${year} — ${hours}:${minutes}`;
+    }
+
+    function calculateDates() {
+        const inputVal = document.getElementById('base-date').value;
+        if (!inputVal) return;
+
+        const baseDate = new Date(inputVal);
+
+        // 1. Κάρτα σε 28 ημέρες
+        const card28Date = new Date(baseDate);
+        card28Date.setDate(card28Date.getDate() + 28);
+        document.getElementById('card-28').innerText = formatDateTime(card28Date);
+
+        // 2. Όχημα σε 90 ημέρες
+        const vehicle90Date = new Date(baseDate);
+        vehicle90Date.setDate(vehicle90Date.getDate() + 90);
+        document.getElementById('vehicle-90').innerText = formatDateTime(vehicle90Date);
+
+        // 3. Έλεγχος 56 ημερών πίσω
+        const check56Date = new Date(baseDate);
+        check56Date.setDate(check56Date.getDate() - 56);
+        document.getElementById('check-56').innerText = formatDateTime(check56Date);
+
+        // 4. Χειμερινή ώρα UTC +2 (Αφαίρεση 2 ωρών για να πάμε σε UTC)
+        const utc2Date = new Date(baseDate);
+        utc2Date.setHours(utc2Date.getHours() - 2);
+        document.getElementById('utc-2').innerText = formatDateTime(utc2Date);
+
+        // 5. Θερινή ώρα UTC +3 (Αφαίρεση 3 ωρών για να πάμε σε UTC)
+        const utc3Date = new Date(baseDate);
+        utc3Date.setHours(utc3Date.getHours() - 3);
+        document.getElementById('utc-3').innerText = formatDateTime(utc3Date);
+    }
+
+    // Αρχικοποίηση με την τρέχουσα ημερομηνία και ώρα τοπικά
+    window.addEventListener('DOMContentLoaded', () => {
+        const now = new Date();
+        
+        // Μορφοποίηση για το input datetime-local (YYYY-MM-DDTHH:mm)
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        
+        const currentDateTimeString = `${year}-${month}-${day}T${hours}:${minutes}`;
+        
+        const dateInput = document.getElementById('base-date');
+        dateInput.value = currentDateTimeString;
+        
+        // Εκτέλεση του πρώτου υπολογισμού
+        calculateDates();
+        
+        // Σύνδεση του event listener για να ανανεώνεται όταν αλλάζει η τιμή
+        dateInput.addEventListener('input', calculateDates);
+    });
+</script>
+
+</body>
+</html>
